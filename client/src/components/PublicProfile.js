@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import qr from '../assets/imgs/qr-code.svg';
 import user from '../assets/imgs/users/33137_5d4db4dc17d01709aac1ce0a4567a278.jpg';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../actions/registerUser';
+import axios from 'axios';
 const PublicProfile = ({ authh: { isAuth, loading }, logout }) => {
+  const { id } = useParams();
   const [user, setuser] = useState();
   const [show, setshow] = useState('show1');
-  useEffect(() => {}, []);
-  if (loading) return <p>loading</p>;
+  useEffect(() => {
+    (() =>
+      axios
+        .get(`/api/users/current/${id}`)
+        .then((user) => setuser(user.data)))();
+  }, []);
+  if (loading || !user) return <p>loading</p>;
   else
     return (
       <div>
@@ -43,11 +50,7 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout }) => {
               </div>
               <div className="col-12">
                 <div className="my-profile-photo">
-                  <img
-                    src="https://www.profiles.blue/assets/imgs/users/33406_295837b07376f707dec3e74c92f838b4.jpg"
-                    alt="photo"
-                    id="profileImg"
-                  />
+                  <img src={user.avatarUrl} alt="photo" id="profileImg" />
                 </div>
                 <h1 id="name">Metro</h1>
                 <p id="bio">ljk</p>

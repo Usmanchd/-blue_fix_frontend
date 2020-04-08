@@ -7,13 +7,15 @@ import { logout } from '../actions/registerUser';
 const Dashboard = ({ authh: { isAuth, loading }, logout, user }) => {
   const [show, setshow] = useState('');
   const { id } = useParams();
+
+  console.log(id, !isAuth, !loading);
   if (id === undefined && !isAuth && !loading)
     return <Redirect to="/register" />;
   else if ((!isAuth || (id !== undefined && user._id !== id)) && !loading) {
     return <Redirect to={`/profile/${id}`} />;
   }
 
-  if (loading) return <p>loading</p>;
+  if (loading || !user.social) return <h5>loading...</h5>;
   else
     return (
       <div>
