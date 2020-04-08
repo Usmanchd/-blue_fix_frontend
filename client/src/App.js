@@ -47,7 +47,6 @@ function App() {
           <Route path="/dashboard/:id">
             <Dashboard />
           </Route>
-
           <Route path="/reset_password">
             <Reset />
           </Route>
@@ -69,6 +68,9 @@ function App() {
           </Route>
           <Route path="/profile/:id">
             <PublicProfile />
+          </Route>
+          <Route path="/profile">
+            <Login />
           </Route>
         </Switch>
       </Router>
