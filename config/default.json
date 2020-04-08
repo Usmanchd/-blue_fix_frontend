@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://arsl:arsl@cluster0-dwren.mongodb.net/profileblue?retryWrites=true&w=majority",
+  "jwtSecret": "mysecrettoken"
+}
