@@ -14,10 +14,6 @@ app.use(cors());
 // Init BodyParsr
 app.use(express.json({ extended: false }));
 
-app.get('/', (req, res) => {
-  res.send('Api is working');
-});
-
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 

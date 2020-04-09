@@ -58,7 +58,6 @@ const EditProfile = ({ loading, user, updateUser, isAuth }) => {
     updateUser(updatedUser);
   };
 
-  console.log(state.imageloading);
   if (Loading || state.imageloading === undefined || state.imageloading)
     return <p>loading</p>;
   else if (!user && loading) return <p>loading</p>;

@@ -234,7 +234,7 @@ const Dashboard = ({ authh: { isAuth, loading }, logout, user }) => {
               </div>
             </div>
             <div className="col-12 text-center r3">
-              <QRCode value="http://facebook.github.io/react/" />
+              <QRCode value={`https://profileblue.herokuapp.com/profile/${user._id}`} />
             </div>
             <div className="col-12 text-center r4">
               <b>Scan this code with a camera</b>

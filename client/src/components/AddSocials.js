@@ -10,7 +10,7 @@ const AddSocials = ({ isAuth, user, updateUser, loading }) => {
     updateUser({ social: socialsUserNames });
   };
 
-  console.log(user);
+
   if (user) {
     if (
       isAuth &&

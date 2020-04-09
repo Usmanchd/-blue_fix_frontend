@@ -49,7 +49,7 @@ router.post('/register', async (req, res) => {
 //@access PRIVATE
 router.get('/current/:id', async (req, res) => {
   const { id } = req.params;
-  console.log(id);
+
   try {
     const user = await User.findById(id);
 
@@ -103,8 +103,6 @@ router.get('/vcf/:id', async (req, res) => {
         ] = `https://www.${social}.com/${user.social[social]}`;
       }
     });
-
-    console.log(vCard.getFormattedString());
 
     vCard.saveToFile('./public/vcf.vcf');
 

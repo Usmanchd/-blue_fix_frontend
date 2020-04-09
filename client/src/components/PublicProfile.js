@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import qr from '../assets/imgs/qr-code.svg';
-import user from '../assets/imgs/users/33137_5d4db4dc17d01709aac1ce0a4567a278.jpg';
+
 import { Link, Redirect, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../actions/registerUser';
@@ -90,7 +89,7 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
                 <p id="bio">{user.bio}</p>
                 <div className="col-12" id="btnDownloadVcard">
                   <a
-                    href={`${process.env.PORT}/api/users/vcf/${user._id}`}
+                    href={`https://profileblue.herokuapp.com/api/users/vcf/${user._id}`}
                     download
                     className="btn"
                   >
@@ -154,14 +153,16 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
             </div>
             <div className="col-12 r2 text-center">
               <div className="col-12 p-0 ">
-                <img src={user.avatarUrl} />
+                <img src={user.avatarUrl} width="200" />
               </div>
               <div className="col-12 p-0">
                 <h3>{user.name}</h3>
               </div>
             </div>
             <div className="col-12 text-center r3">
-              <QRCode value={`${process.env.PORT}/profile/${user._id}`} />
+              <QRCode
+                value={`https://profileblue.herokuapp.com/profile/${user._id}`}
+              />
             </div>
             <div className="col-12 text-center r4">
               <b>Scan this code with a camera</b>
