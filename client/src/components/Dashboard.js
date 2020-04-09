@@ -227,14 +227,16 @@ const Dashboard = ({ authh: { isAuth, loading }, logout, user }) => {
             </div>
             <div className="col-12 r2 text-center">
               <div className="col-12 p-0">
-                <img src={user.avatarUrl} />
+                <img src={user.avatarUrl} width="200" />
               </div>
               <div className="col-12 p-0">
                 <h3>{user.name}</h3>
               </div>
             </div>
             <div className="col-12 text-center r3">
-              <QRCode value={`https://profileblue.herokuapp.com/profile/${user._id}`} />
+              <QRCode
+                value={`https://profileblue.herokuapp.com/profile/${user._id}`}
+              />
             </div>
             <div className="col-12 text-center r4">
               <b>Scan this code with a camera</b>
