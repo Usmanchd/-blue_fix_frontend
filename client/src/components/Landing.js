@@ -1,8 +1,11 @@
 import React from 'react';
 import background from '../assets/bg.png';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const Landing = () => {
+const Landing = ({ isAuth, loading }) => {
+  if (isAuth) return <Redirect to="/login" />;
+  if (loading) return <p>loading...</p>;
   return (
     <div className="tuto1">
       <div className="container">
@@ -41,4 +44,9 @@ const Landing = () => {
   );
 };
 
-export default Landing;
+const mapStateToProps = (state) => ({
+  isAuth: state.registerUser.isAuth,
+  loading: state.registerUser.loading,
+});
+
+export default connect(mapStateToProps)(Landing);

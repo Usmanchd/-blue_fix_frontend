@@ -82,12 +82,12 @@ router.get('/vcf/:id', async (req, res) => {
     var vCardsJS = require('vcards-js');
     var vCard = vCardsJS();
 
-    vCard.uid = user._id;
-    vCard.firstName = user.name;
-    vCard.photo.attachFromUrl(user.avatarUrl, 'JPG');
-    vCard.email = user.email;
-    vCard.homeAddress.city = user.social.address;
-    vCard.cellPhone = user.social.phone;
+    if (user._id) vCard.uid = user._id;
+    if (user.name) vCard.firstName = user.name;
+    if (user.avatarUrl) vCard.photo.attachFromUrl(user.avatarUrl, 'JPG');
+    if (user.email) vCard.email = user.email;
+    if (user.social.address) vCard.homeAddress.city = user.social.address;
+    if (user.social.phone) vCard.cellPhone = user.social.phone;
 
     Object.keys(user.social).map((social) => {
       if (
@@ -98,9 +98,10 @@ router.get('/vcf/:id', async (req, res) => {
         social !== 'phone' &&
         social !== 'whatsapp'
       ) {
-        vCard.socialUrls[
-          social
-        ] = `https://www.${social}.com/${user.social[social]}`;
+        if (social !== '')
+          vCard.socialUrls[
+            social
+          ] = `https://www.${social}.com/${user.social[social]}`;
       }
     });
 

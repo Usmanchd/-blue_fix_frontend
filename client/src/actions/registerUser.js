@@ -8,9 +8,6 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   CLEAR_PROFILE,
-  ADD_PIC,
-  ADD_BIO,
-  ADD_SOCIAL,
   UPDATE_FAIL,
   GET_PROFILE,
   PROFILE_ERROR,
@@ -20,7 +17,6 @@ import setAuthToken from '../utils/setAuthToken';
 
 // Load User
 export const loadUser = () => async (disptach) => {
- 
   if (localStorage.token) setAuthToken(localStorage.token);
   try {
     const res = await axios.get('/api/auth/current');

@@ -21,14 +21,15 @@ const Dashboard = ({ authh: { isAuth, loading }, logout, user }) => {
       username !== 'link' &&
       username !== 's_email' &&
       username !== 'website' &&
-      username !== 'phone' &&
-      username !== 'whatsapp'
+      username !== 'phone'
     ) {
       if (user.social[username]) {
         if (username === 'spotify')
           return `http://open.${username}.com/add/${user.social[username]}`;
         else if (username === 'snapchat')
           return `http://${username}.com/add/${user.social[username]}}`;
+        else if (username === 'whatsapp')
+          return `https://api.whatsapp.com/send?phone=${user.social[username]}`;
         else return `http://${username}.com/${user.social[username]}`;
       }
     }

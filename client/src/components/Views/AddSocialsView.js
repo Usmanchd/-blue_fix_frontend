@@ -61,31 +61,75 @@ const AddSocialsView = ({ onSubmit, mode, initialState, id }) => {
       social !== 'whatsapp'
     ) {
       if (state[social]) {
-        return (
-          <li
-            className="urlCon"
-            style={{ display: display[social] }}
-            id="uc_instagram"
-          >
-            {social === 'spotify' ? (
+        if (social === 'spotify') {
+          return (
+            <li
+              className="urlCon"
+              style={{ display: display[social] }}
+              id="uc_instagram"
+            >
               <div>
                 <p className="m-0">
                   http://open.{social}.com/add/{state[social]}
                   <b></b>
                 </p>
               </div>
-            ) : (
+            </li>
+          );
+        } else if (social === 'snapchat') {
+          return (
+            <li
+              className="urlCon"
+              style={{ display: display[social] }}
+              id="uc_instagram"
+            >
               <div>
                 <p className="m-0">
-                  {social === 'snapchat'
-                    ? `http://${social}.com/add/${state[social]}`
-                    : `http://${social}.com/${state[social]}`}
+                  http://{social}.com/add/{state[social]}
                   <b></b>
                 </p>
               </div>
-            )}
-          </li>
-        );
+            </li>
+          );
+        } else {
+          return (
+            <li
+              className="urlCon"
+              style={{ display: display[social] }}
+              id="uc_instagram"
+            >
+              <div>
+                <p className="m-0">
+                  http://{social}.com/{state[social]}
+                  <b></b>
+                </p>
+              </div>
+            </li>
+          );
+        }
+        // <li
+        //   className="urlCon"
+        //   style={{ display: display[social] }}
+        //   id="uc_instagram"
+        // >
+        //   {social === 'spotify' ? (
+        //     <div>
+        //       <p className="m-0">
+        //         http://open.{social}.com/add/{state[social]}
+        //         <b></b>
+        //       </p>
+        //     </div>
+        //   ) : (
+        //     <div>
+        //       <p className="m-0">
+        //         {social === 'snapchat'
+        //           ? `http://${social}.com/add/${state[social]}`
+        //           : `http://${social}.com/${state[social]}`}
+        //         <b></b>
+        //       </p>
+        //     </div>
+        //   )}
+        // </li>
       }
     }
   };
