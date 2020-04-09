@@ -119,6 +119,7 @@ const EditProfile = ({ loading, user, updateUser, isAuth }) => {
                     type="text"
                     value={User.email}
                     onChange={onChange}
+                    disabled
                   />
                 </div>
                 <div class="form-con">
