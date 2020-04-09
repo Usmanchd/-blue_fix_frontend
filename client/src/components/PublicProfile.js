@@ -5,16 +5,42 @@ import { Link, Redirect, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../actions/registerUser';
 import axios from 'axios';
-const PublicProfile = ({ authh: { isAuth, loading }, logout }) => {
+var QRCode = require('qrcode.react');
+
+const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
   const { id } = useParams();
   const [user, setuser] = useState();
   const [show, setshow] = useState('show1');
+
   useEffect(() => {
     (() =>
       axios
         .get(`/api/users/current/${id}`)
         .then((user) => setuser(user.data)))();
   }, []);
+
+  const getLink = (username) => {
+    if (
+      username !== 'address' &&
+      username !== 'link' &&
+      username !== 's_email' &&
+      username !== 'website' &&
+      username !== 'phone' &&
+      username !== 'whatsapp'
+    ) {
+      if (user.social[username]) {
+        if (username === 'spotify')
+          return `http://open.${username}.com/add/${user.social[username]}`;
+        else if (username === 'snapchat')
+          return `http://${username}.com/add/${user.social[username]}}`;
+        else return `http://${username}.com/${user.social[username]}`;
+      }
+    }
+  };
+
+  if (logedUser !== null && id === logedUser._id)
+    return <Redirect to="/login" />;
+
   if (loading || !user) return <p>loading</p>;
   else
     return (
@@ -26,9 +52,17 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout }) => {
                 <div className="tuto-ttl">
                   <h1>Hello</h1>
                   <span>my name is</span>
-                  <a href="">
-                    <i className=""></i>
-                  </a>
+                  {isAuth ? (
+                    <Link to="/login">
+                      <i className=""></i>
+                      Profile
+                    </Link>
+                  ) : (
+                    <Link to="/login">
+                      <i className=""></i>
+                      Login
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
@@ -52,37 +86,49 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout }) => {
                 <div className="my-profile-photo">
                   <img src={user.avatarUrl} alt="photo" id="profileImg" />
                 </div>
-                <h1 id="name">Metro</h1>
-                <p id="bio">ljk</p>
+                <h1 id="name">{user.name}</h1>
+                <p id="bio">{user.bio}</p>
                 <div className="col-12" id="btnDownloadVcard">
                   <a
-                    href="https://www.profiles.blue/download/vcard/33406"
-                    target="_blank"
+                    href={`${process.env.PORT}/api/users/vcf/${user._id}`}
+                    download
                     className="btn"
                   >
                     Add to Contacts <i className="fa fa-download"></i>
                   </a>
                 </div>
+
                 <b className="text-center mt-2 mb-2 d-block">
                   <a className="d-block href" id="shareContact">
                     Share My Contact With Metro?
                   </a>
                   <div className="col-12 social2">
-                    <ul className="row selfPro">
-                      <li className="col-12">
-                        <a
-                          type="instagram"
-                          href="http://instagram.com/adsfs"
-                          target="_blank"
-                        >
-                          <img src="https://www.profiles.blue/assets/imgs/social-network-instagram.png" />
-                          <div>
-                            <p>
-                              <b>Instagram</b>
-                            </p>
-                          </div>
-                        </a>
-                      </li>
+                    <ul className="row">
+                      {Object.keys(user.social).map(
+                        (username) =>
+                          user.social[username] !== '' && (
+                            <li className="col-12">
+                              <a
+                                type="instagram"
+                                href={getLink(username)}
+                                target="_blank"
+                              >
+                                <img
+                                  src={
+                                    username === 'address'
+                                      ? 'https://www.profiles.blue/assets/imgs/map.png'
+                                      : `https://www.profiles.blue/assets/imgs/social-network-${username}.png`
+                                  }
+                                />
+                                <div>
+                                  <p>
+                                    <b>{username}</b>
+                                  </p>
+                                </div>
+                              </a>
+                            </li>
+                          )
+                      )}
                     </ul>
                   </div>
                 </b>
@@ -107,15 +153,15 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout }) => {
               />
             </div>
             <div className="col-12 r2 text-center">
-              <div className="col-12 p-0">
-                <img src="https://www.profiles.blue/assets/imgs/users/33406_295837b07376f707dec3e74c92f838b4.jpg" />
+              <div className="col-12 p-0 ">
+                <img src={user.avatarUrl} />
               </div>
               <div className="col-12 p-0">
-                <h3>Metro</h3>
+                <h3>{user.name}</h3>
               </div>
             </div>
             <div className="col-12 text-center r3">
-              <img src="https://www.profiles.blue/assets/imgs/users/qr/33406.png" />
+              <QRCode value={`${process.env.PORT}/profile/${user._id}`} />
             </div>
             <div className="col-12 text-center r4">
               <b>Scan this code with a camera</b>
@@ -136,7 +182,7 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout }) => {
 
 const mapStateToProps = (state) => ({
   authh: state.registerUser,
-  user: state.registerUser.user,
+  logedUser: state.registerUser.user,
 });
 
 export default connect(mapStateToProps, { logout })(PublicProfile);

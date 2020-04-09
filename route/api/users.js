@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
+
 // @route  POST/api/users
 //@desc    Register user
 //@access  Public
@@ -65,9 +66,49 @@ router.get('/current/:id', async (req, res) => {
 
 router.post('/update_user', auth, async (req, res) => {
   let obj = req.body;
+  if (obj._id) delete obj._id;
   try {
     await User.findByIdAndUpdate(req.user.id, obj);
     res.status(200).send('success');
+  } catch (err) {
+    res.status(500).send('Server Error');
+  }
+});
+
+router.get('/vcf/:id', async (req, res) => {
+  let { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    var vCardsJS = require('vcards-js');
+    var vCard = vCardsJS();
+
+    vCard.uid = user._id;
+    vCard.firstName = user.name;
+    vCard.photo.attachFromUrl(user.avatarUrl, 'JPG');
+    vCard.email = user.email;
+    vCard.homeAddress.city = user.social.address;
+    vCard.cellPhone = user.social.phone;
+
+    Object.keys(user.social).map((social) => {
+      if (
+        social !== 'address' &&
+        social !== 'link' &&
+        social !== 's_email' &&
+        social !== 'website' &&
+        social !== 'phone' &&
+        social !== 'whatsapp'
+      ) {
+        vCard.socialUrls[
+          social
+        ] = `https://www.${social}.com/${user.social[social]}`;
+      }
+    });
+
+    console.log(vCard.getFormattedString());
+
+    vCard.saveToFile('./public/vcf.vcf');
+
+    res.download('./public/vcf.vcf');
   } catch (err) {
     res.status(500).send('Server Error');
   }

@@ -4,16 +4,35 @@ import user from '../assets/imgs/users/33137_5d4db4dc17d01709aac1ce0a4567a278.jp
 import { Link, Redirect, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../actions/registerUser';
+var QRCode = require('qrcode.react');
 const Dashboard = ({ authh: { isAuth, loading }, logout, user }) => {
   const [show, setshow] = useState('');
   const { id } = useParams();
 
-  console.log(id, !isAuth, !loading);
   if (id === undefined && !isAuth && !loading)
     return <Redirect to="/register" />;
   else if ((!isAuth || (id !== undefined && user._id !== id)) && !loading) {
     return <Redirect to={`/profile/${id}`} />;
   }
+
+  const getLink = (username) => {
+    if (
+      username !== 'address' &&
+      username !== 'link' &&
+      username !== 's_email' &&
+      username !== 'website' &&
+      username !== 'phone' &&
+      username !== 'whatsapp'
+    ) {
+      if (user.social[username]) {
+        if (username === 'spotify')
+          return `http://open.${username}.com/add/${user.social[username]}`;
+        else if (username === 'snapchat')
+          return `http://${username}.com/add/${user.social[username]}}`;
+        else return `http://${username}.com/${user.social[username]}`;
+      }
+    }
+  };
 
   if (loading || !user.social) return <h5>loading...</h5>;
   else
@@ -92,11 +111,15 @@ const Dashboard = ({ authh: { isAuth, loading }, logout, user }) => {
                             <li className="col-12">
                               <a
                                 type="instagram"
-                                href={`http://instagram.com/${user.social[username]}`}
+                                href={getLink(username)}
                                 target="_blank"
                               >
                                 <img
-                                  src={`https://www.profiles.blue/assets/imgs/social-network-${username}.png`}
+                                  src={
+                                    username === 'address'
+                                      ? 'https://www.profiles.blue/assets/imgs/map.png'
+                                      : `https://www.profiles.blue/assets/imgs/social-network-${username}.png`
+                                  }
                                 />
                                 <div>
                                   <p>
@@ -204,14 +227,14 @@ const Dashboard = ({ authh: { isAuth, loading }, logout, user }) => {
             </div>
             <div className="col-12 r2 text-center">
               <div className="col-12 p-0">
-                <img src="https://www.profiles.blue/assets/imgs/users/33406_295837b07376f707dec3e74c92f838b4.jpg" />
+                <img src={user.avatarUrl} />
               </div>
               <div className="col-12 p-0">
-                <h3>Metro</h3>
+                <h3>{user.name}</h3>
               </div>
             </div>
             <div className="col-12 text-center r3">
-              <img src="https://www.profiles.blue/assets/imgs/users/qr/33406.png" />
+              <QRCode value="http://facebook.github.io/react/" />
             </div>
             <div className="col-12 text-center r4">
               <b>Scan this code with a camera</b>

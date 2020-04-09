@@ -1,0 +1,23 @@
+BEGIN:VCARD
+VERSION:3.0
+FN;CHARSET=UTF-8:Usman Aslam
+N;CHARSET=UTF-8:;Usman Aslam;;;
+UID;CHARSET=UTF-8:5e8ddbbed66234398c181350
+EMAIL;CHARSET=UTF-8;type=HOME,INTERNET:usman@gmail.com
+PHOTO;TYPE=JPG:https://firebasestorage.googleapis.com/v0/b/blue-f42e7.appspot.com/o/images%2F00b81538-9911-43b1-b4b1-653bed5e0dea.jpg?alt=media&token=954a1fcd-ea56-4016-958a-695480fe882d
+ADR;CHARSET=UTF-8;TYPE=HOME:;;;Hazen Street;;;
+X-SOCIALPROFILE;CHARSET=UTF-8;TYPE=facebook:https://www.facebook.com/
+X-SOCIALPROFILE;CHARSET=UTF-8;TYPE=twitter:https://www.twitter.com/
+X-SOCIALPROFILE;CHARSET=UTF-8;TYPE=$init:https://www.$init.com/true
+X-SOCIALPROFILE;CHARSET=UTF-8;TYPE=instagram:https://www.instagram.com/usman
+X-SOCIALPROFILE;CHARSET=UTF-8;TYPE=venmo:https://www.venmo.com/usman
+X-SOCIALPROFILE;CHARSET=UTF-8;TYPE=snapchat:https://www.snapchat.com/usman
+X-SOCIALPROFILE;CHARSET=UTF-8;TYPE=linkedin:https://www.linkedin.com/9jm
+X-SOCIALPROFILE;CHARSET=UTF-8;TYPE=youtube:https://www.youtube.com/
+X-SOCIALPROFILE;CHARSET=UTF-8;TYPE=pinterest:https://www.pinterest.com/
+X-SOCIALPROFILE;CHARSET=UTF-8;TYPE=applemusic:https://www.applemusic.com/
+X-SOCIALPROFILE;CHARSET=UTF-8;TYPE=spotify:https://www.spotify.com/
+X-SOCIALPROFILE;CHARSET=UTF-8;TYPE=paypal:https://www.paypal.com/
+X-SOCIALPROFILE;CHARSET=UTF-8;TYPE=soundcloud:https://www.soundcloud.com/
+REV:2020-04-09T12:00:01.043Z
+END:VCARD
