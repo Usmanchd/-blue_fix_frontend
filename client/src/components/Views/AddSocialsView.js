@@ -173,7 +173,10 @@ const AddSocialsView = ({ onSubmit, mode, initialState, id }) => {
                 <input
                   value={state[social]}
                   onChange={(e) => {
-                    if (e.target.value[e.target.value.length - 1] === ' ')
+                    if (
+                      e.target.value[e.target.value.length - 1] === ' ' &&
+                      e.target.name !== 'address'
+                    )
                       return;
                     setstate({
                       ...state,
