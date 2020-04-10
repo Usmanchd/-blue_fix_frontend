@@ -88,6 +88,8 @@ router.get('/vcf/:id', async (req, res) => {
     if (user.email) vCard.email = user.email;
     if (user.social.address) vCard.homeAddress.city = user.social.address;
     if (user.social.phone) vCard.cellPhone = user.social.phone;
+    vCard.url = `https://profileblue.herokuapp.com/profile/${user._id}`;
+    vCard.workUrl = `https://www.instagram.com/${user.social['instagram']}`;
 
     Object.keys(user.social).map((social) => {
       if (
@@ -98,7 +100,7 @@ router.get('/vcf/:id', async (req, res) => {
         social !== 'phone' &&
         social !== 'whatsapp'
       ) {
-        if (social !== '')
+        if (user.social[social] !== '')
           vCard.socialUrls[
             social
           ] = `https://www.${social}.com/${user.social[social]}`;
@@ -106,6 +108,8 @@ router.get('/vcf/:id', async (req, res) => {
     });
 
     vCard.saveToFile('./public/vcf.vcf');
+
+    console.log(vCard);
 
     res.download('./public/vcf.vcf');
   } catch (err) {
