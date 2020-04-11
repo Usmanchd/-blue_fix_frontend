@@ -98,7 +98,7 @@ router.get('/reset/:email', async (req, res) => {
 
     res.status(200).send('Check Your Email');
   } catch (err) {
-    res.status(500).json('Server Error');
+    res.status(500).json({ msg: 'Server Error' });
   }
 });
 
@@ -112,7 +112,7 @@ router.post('/code_check', async (req, res) => {
     if (user.resetCode === code) res.status(200).send('success');
     else res.status(400).send({ msg: 'incorrect code' });
   } catch (err) {
-    res.status(500).send('Server Error');
+    res.status(500).send({ msg: 'Server Error' });
   }
 });
 
