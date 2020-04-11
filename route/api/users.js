@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
+const nodemailer = require('nodemailer');
 
 // @route  POST/api/users
 //@desc    Register user
@@ -44,9 +45,7 @@ router.post('/register', async (req, res) => {
     console.log(err);
   }
 });
-// @route GET/api/users/current
-//@desc Get current user profile
-//@access PRIVATE
+
 router.get('/current/:id', async (req, res) => {
   const { id } = req.params;
 
@@ -62,14 +61,100 @@ router.get('/current/:id', async (req, res) => {
     res.status(500).json('Server Error');
   }
 });
-// Add Picture
 
+router.get('/reset/:email', async (req, res) => {
+  const { email } = req.params;
+
+  const code = Math.floor(Math.random() * 9000 + 999);
+
+  try {
+    const user = await User.findOneAndUpdate(
+      { email },
+      { resetCode: code },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ msg: 'there is no user for this email' });
+    }
+
+    // create reusable transporter object using the default SMTP transport
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'usman.aslam0701@gmail.com',
+        pass: 'kj1fkyhs2345kk0880',
+      },
+    });
+
+    // send mail with defined transport object
+    await transporter.sendMail({
+      from: 'usman.aslam0701@gmail.com', // sender address
+      to: user.email, // list of receivers
+      subject: 'Reset Password✔', // Subject line
+      text: `Your Reset Code is ${code}`, // plain text body
+      html: `<h1>Your Reset Code is ${code}</h1>`, // html body
+    });
+
+    res.status(200).send('Check Your Email');
+  } catch (err) {
+    res.status(500).json('Server Error');
+  }
+});
+
+router.post('/code_check', async (req, res) => {
+  let code = req.body.code;
+  let email = req.body.email;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (user.resetCode === code) res.status(200).send('success');
+    else res.status(400).send({ msg: 'incorrect code' });
+  } catch (err) {
+    res.status(500).send('Server Error');
+  }
+});
+
+router.post('/reset_password', async (req, res) => {
+  let password = req.body.password;
+  let email = req.body.email;
+
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedpassword = await bcrypt.hash(password, salt);
+
+    await User.findOneAndUpdate({ email }, { password: hashedpassword });
+
+    res.status(200).send('success');
+  } catch (err) {
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route GET/api/users/current
+//@desc Get current user profile
+//@access PRIVATE
+
+// Update User
 router.post('/update_user', auth, async (req, res) => {
   let obj = req.body;
   if (obj._id) delete obj._id;
   try {
     await User.findByIdAndUpdate(req.user.id, obj);
     res.status(200).send('success');
+  } catch (err) {
+    res.status(500).send('Server Error');
+  }
+});
+
+router.post('/update_clicks/:id', async (req, res) => {
+  let obj = req.body;
+  const id = req.params.id;
+
+  try {
+    const user = await User.findByIdAndUpdate(id, obj, { new: true });
+    res.status(200).json(user);
   } catch (err) {
     res.status(500).send('Server Error');
   }
@@ -109,43 +194,10 @@ router.get('/vcf/:id', async (req, res) => {
 
     vCard.saveToFile('./public/vcf.vcf');
 
-    console.log(vCard);
-
     res.download('./public/vcf.vcf');
   } catch (err) {
     res.status(500).send('Server Error');
   }
 });
-
-// router.post("/add_pic", auth, async (req, res) => {
-//   let picture = req.body;
-//   try {
-//     await User.findByIdAndUpdate(req.user.id, picture);
-//     res.status(200).send("success");
-//   } catch (err) {
-//     res.status(500).send("Server Error");
-//   }
-// });
-// // Add bio
-// router.post("/add_bio", auth, async (req, res) => {
-//   let bio = req.body;
-//   try {
-//     await User.findByIdAndUpdate(req.user.id, bio);
-//     res.status(200).send("success");
-//   } catch (err) {
-//     res.status(500).send("Server Error");
-//   }
-// });
-// // Add Social
-// router.post("/add_social", auth, async (req, res) => {
-//   let social = req.body;
-
-//   try {
-//     await User.findByIdAndUpdate(req.user.id, { social });
-//     res.status(200).send("success");
-//   } catch (err) {
-//     res.status(500).send("Server Error");
-//   }
-// });
 
 module.exports = router;

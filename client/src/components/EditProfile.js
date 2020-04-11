@@ -59,8 +59,8 @@ const EditProfile = ({ loading, user, updateUser, isAuth }) => {
   };
 
   if (Loading || state.imageloading === undefined || state.imageloading)
-    return <p>loading</p>;
-  else if (!user && loading) return <p>loading</p>;
+    return <p style={{ textAlign: 'center' }}>loading...</p>;
+  else if (!user && loading) return <p style={{ textAlign: 'center' }}>loading...</p>;
   else if (!isAuth) {
     return <Redirect to="/register" />;
   } else

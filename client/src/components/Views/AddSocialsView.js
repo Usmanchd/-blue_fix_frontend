@@ -10,24 +10,24 @@ const AddSocialsView = ({ onSubmit, mode, initialState, id }) => {
   }, []);
 
   const [state, setstate] = useState({
-    instagram: '',
-    venmo: '',
-    snapchat: '',
-    whatsapp: '',
-    phone: '',
-    twitter: '',
-    facebook: '',
-    linkedin: '',
-    youtube: '',
-    pinterest: '',
-    applemusic: '',
-    spotify: '',
-    paypal: '',
-    soundcloud: '',
-    website: '',
-    link: '',
-    s_email: '',
-    address: '',
+    instagram: { value: '', clicks: 0 },
+    venmo: { value: '', clicks: 0 },
+    snapchat: { value: '', clicks: 0 },
+    whatsapp: { value: '', clicks: 0 },
+    phone: { value: '', clicks: 0 },
+    twitter: { value: '', clicks: 0 },
+    facebook: { value: '', clicks: 0 },
+    linkedin: { value: '', clicks: 0 },
+    youtube: { value: '', clicks: 0 },
+    pinterest: { value: '', clicks: 0 },
+    applemusic: { value: '', clicks: 0 },
+    spotify: { value: '', clicks: 0 },
+    paypal: { value: '', clicks: 0 },
+    soundcloud: { value: '', clicks: 0 },
+    website: { value: '', clicks: 0 },
+    link: { value: '', clicks: 0 },
+    s_email: { value: '', clicks: 0 },
+    address: { value: '', clicks: 0 },
   });
 
   const [display, setdisplay] = useState({
@@ -60,7 +60,7 @@ const AddSocialsView = ({ onSubmit, mode, initialState, id }) => {
       social !== 'phone' &&
       social !== 'whatsapp'
     ) {
-      if (state[social]) {
+      if (state[social].value) {
         if (social === 'spotify') {
           return (
             <li
@@ -70,7 +70,7 @@ const AddSocialsView = ({ onSubmit, mode, initialState, id }) => {
             >
               <div>
                 <p className="m-0">
-                  http://open.{social}.com/add/{state[social]}
+                  http://open.{social}.com/add/{state[social].value}
                   <b></b>
                 </p>
               </div>
@@ -85,7 +85,7 @@ const AddSocialsView = ({ onSubmit, mode, initialState, id }) => {
             >
               <div>
                 <p className="m-0">
-                  http://{social}.com/add/{state[social]}
+                  http://{social}.com/add/{state[social].value}
                   <b></b>
                 </p>
               </div>
@@ -100,36 +100,13 @@ const AddSocialsView = ({ onSubmit, mode, initialState, id }) => {
             >
               <div>
                 <p className="m-0">
-                  http://{social}.com/{state[social]}
+                  http://{social}.com/{state[social].value}
                   <b></b>
                 </p>
               </div>
             </li>
           );
         }
-        // <li
-        //   className="urlCon"
-        //   style={{ display: display[social] }}
-        //   id="uc_instagram"
-        // >
-        //   {social === 'spotify' ? (
-        //     <div>
-        //       <p className="m-0">
-        //         http://open.{social}.com/add/{state[social]}
-        //         <b></b>
-        //       </p>
-        //     </div>
-        //   ) : (
-        //     <div>
-        //       <p className="m-0">
-        //         {social === 'snapchat'
-        //           ? `http://${social}.com/add/${state[social]}`
-        //           : `http://${social}.com/${state[social]}`}
-        //         <b></b>
-        //       </p>
-        //     </div>
-        //   )}
-        // </li>
       }
     }
   };
@@ -138,26 +115,7 @@ const AddSocialsView = ({ onSubmit, mode, initialState, id }) => {
     <div id="show1" className="toppad showtxt1">
       <form onSubmit={(e) => e.preventDefault()}>
         <ul>
-          {[
-            'instagram',
-            'venmo',
-            'snapchat',
-            'twitter',
-            'facebook',
-            'linkedin',
-            'youtube',
-            'pinterest',
-            'whatsapp',
-            'applemusic',
-            'spotify',
-            'paypal',
-            'soundcloud',
-            'website',
-            'link',
-            'phone',
-            's_email',
-            'address',
-          ].map((social) => (
+          {Object.keys(state).map((social) => (
             <React.Fragment>
               <li>
                 <div className="s-img">
@@ -171,7 +129,7 @@ const AddSocialsView = ({ onSubmit, mode, initialState, id }) => {
                   />
                 </div>
                 <input
-                  value={state[social]}
+                  value={state[social].value}
                   onChange={(e) => {
                     if (
                       e.target.value[e.target.value.length - 1] === ' ' &&
@@ -180,7 +138,10 @@ const AddSocialsView = ({ onSubmit, mode, initialState, id }) => {
                       return;
                     setstate({
                       ...state,
-                      [e.target.name]: e.target.value,
+                      [e.target.name]: {
+                        ...state[e.target.name],
+                        value: e.target.value,
+                      },
                     });
                   }}
                   onFocus={(e) =>

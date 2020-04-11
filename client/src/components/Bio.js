@@ -29,7 +29,7 @@ const Bio = ({ updateUser, user, isAuth, loading }) => {
     return <Redirect to="/register" />;
   }
 
-  if (loading) return <p>loading</p>;
+  if (loading) return <p style={{ textAlign: 'center' }}>loading...</p>;
   else
     return (
       <div class="my-name my-bio">

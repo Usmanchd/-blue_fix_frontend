@@ -24,6 +24,7 @@
     "express-validator": "^6.4.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.7",
+    "nodemailer": "^2.7.2",
     "path": "^0.12.7",
     "redux-devtools-extension": "^2.13.8",
     "vcards-js": "^2.10.0"

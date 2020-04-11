@@ -18,21 +18,48 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
         .then((user) => setuser(user.data)))();
   }, []);
 
+  const handleClicks = async (name) => {
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+      },
+    };
+
+    let social = {
+      ...user.social,
+      [name]: {
+        ...user.social[name],
+        clicks: user.social[name].clicks + 1,
+      },
+    };
+    const body = JSON.stringify({ social });
+
+    try {
+      const User = await axios.post(
+        `/api/users/update_clicks/${user._id}`,
+        body,
+        config
+      );
+      setuser({ ...User.data });
+    } catch (err) {}
+  };
+
   const getLink = (username) => {
     if (
       username !== 'address' &&
       username !== 'link' &&
       username !== 's_email' &&
       username !== 'website' &&
-      username !== 'phone' &&
-      username !== 'whatsapp'
+      username !== 'phone'
     ) {
-      if (user.social[username]) {
+      if (user.social[username].value) {
         if (username === 'spotify')
-          return `http://open.${username}.com/add/${user.social[username]}`;
+          return `http://open.${username}.com/add/${user.social[username].value}`;
         else if (username === 'snapchat')
-          return `http://${username}.com/add/${user.social[username]}}`;
-        else return `http://${username}.com/${user.social[username]}`;
+          return `http://${username}.com/add/${user.social[username].value}}`;
+        else if (username === 'whatsapp')
+          return `https://api.whatsapp.com/send?phone=${user.social[username].value}`;
+        else return `http://${username}.com/${user.social[username].value}`;
       }
     }
   };
@@ -40,7 +67,8 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
   if (logedUser !== null && id === logedUser._id)
     return <Redirect to="/login" />;
 
-  if (loading || !user) return <p>loading</p>;
+  if (loading || !user)
+    return <p style={{ textAlign: 'center' }}>loading...</p>;
   else
     return (
       <div>
@@ -105,27 +133,51 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
                     <ul className="row">
                       {Object.keys(user.social).map(
                         (username) =>
-                          user.social[username] !== '' && (
-                            <li className="col-12">
-                              <a
-                                type="instagram"
-                                href={getLink(username)}
-                                target="_blank"
-                              >
-                                <img
-                                  src={
-                                    username === 'address'
-                                      ? 'https://www.profiles.blue/assets/imgs/map.png'
-                                      : `https://www.profiles.blue/assets/imgs/social-network-${username}.png`
-                                  }
-                                />
-                                <div>
-                                  <p>
-                                    <b>{username}</b>
-                                  </p>
-                                </div>
-                              </a>
-                            </li>
+                          user.social[username].value !== '' && (
+                            <React.Fragment>
+                              <li className="col-12">
+                                <a
+                                  type="instagram"
+                                  href={getLink(username)}
+                                  target="_blank"
+                                  onClick={() => handleClicks(username)}
+                                  style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    width: '65%',
+                                    margin: 'auto',
+                                  }}
+                                >
+                                  <img
+                                    src={
+                                      username === 'address'
+                                        ? 'https://www.profiles.blue/assets/imgs/map.png'
+                                        : `https://www.profiles.blue/assets/imgs/social-network-${username}.png`
+                                    }
+                                  />
+                                  <div>
+                                    <p style={{ marginBottom: '0' }}>
+                                      <b>
+                                        {username.charAt(0).toUpperCase() +
+                                          username.slice(1)}
+                                      </b>
+                                      <br />
+                                      <b>Clicks: </b>
+                                      {user.social[username].clicks}
+                                    </p>
+                                  </div>
+                                </a>
+                              </li>
+                              <span
+                                style={{
+                                  borderTop: '1px solid #bdbdbd',
+                                  // height: '1px',
+                                  width: '80%',
+                                  margin: 'auto',
+                                }}
+                              ></span>
+                            </React.Fragment>
                           )
                       )}
                     </ul>

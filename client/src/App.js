@@ -8,6 +8,7 @@ import Terms from './components/Terms';
 import Policy from './components/Policy';
 import Dashboard from './components/Dashboard';
 import AddProfileImage from './components/AddProfileImage';
+import EnterCode from './components/EnterCode';
 import AddSocials from './components/AddSocials';
 import Bio from './components/Bio';
 import EditProfile from './components/EditProfile';
@@ -17,6 +18,7 @@ import setAuthToken from './utils/setAuthToken';
 import { loadUser } from './actions/registerUser';
 import PrivateRoute from './components/routing/PrivateRoute';
 import PublicProfile from './components/PublicProfile';
+import ResetPassword from './components/ResetPassword';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -49,6 +51,12 @@ function App() {
           </Route>
           <Route path="/reset_password">
             <Reset />
+          </Route>
+          <Route path="/enter_code">
+            <EnterCode />
+          </Route>
+          <Route path="/new_password">
+            <ResetPassword />
           </Route>
 
           <Route path="/terms_and_conditions">

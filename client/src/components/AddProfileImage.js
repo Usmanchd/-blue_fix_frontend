@@ -45,7 +45,7 @@ const AddProfileImage = ({ updateUser, user, isAuth, loading }) => {
     return <Redirect to="/register" />;
   }
 
-  if (loading || !user) return <p>loading</p>;
+  if (loading || !user) return <p style={{ textAlign: 'center' }}>loading</p>;
   else
     return (
       <div className="my-name add-pro-photo">

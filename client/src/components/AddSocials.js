@@ -26,7 +26,7 @@ const AddSocials = ({ isAuth, user, updateUser, loading }) => {
     return <Redirect to="/register" />;
   }
 
-  if (loading) return <p>loading</p>;
+  if (loading) return <p style={{ textAlign: 'center' }}>loading...</p>;
   else
     return (
       <div className="add-topic social-link">

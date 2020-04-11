@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 const Landing = ({ isAuth, loading }) => {
   if (isAuth) return <Redirect to="/login" />;
-  if (loading) return <p>loading...</p>;
+  if (loading) return <p style={{ textAlign: 'center' }}>loading...</p>;
   return (
     <div className="tuto1">
       <div className="container">

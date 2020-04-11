@@ -119,47 +119,37 @@ export const updateUser = (obj) => async (disptach) => {
   }
 };
 
-// //Add bio
-// export const addBio = (obj) => async (disptach) => {
-//   const config = {
-//     headers: {
-//       "Content-type": "application/json",
-//     },
-//   };
-//   const body = JSON.stringify(obj);
-
-//   try {
-//     await axios.post("/api/users/add_bio", body, config);
-//     disptach(loadUser());
-//   } catch (err) {
-//     disptach({
-//       type: UPDATE_FAIL,
-//     });
-//   }
-// };
-
-// export const addSocial = (obj) => async (disptach) => {
-//   const config = {
-//     headers: {
-//       "Content-type": "application/json",
-//     },
-//   };
-//   const body = JSON.stringify(obj);
-//   console.log(body);
-//   try {
-//     await axios.post("/api/users/add_social", body, config);
-//     disptach(loadUser());
-//   } catch (err) {
-//     disptach({
-//       type: UPDATE_FAIL,
-//     });
-//   }
-// };
 export const getCurrentProfile = () => async (dispatch) => {
   try {
     const res = await axios.get('/api/profile/current');
     dispatch({
       type: GET_PROFILE,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+export const updateClicks = (social, id) => async (dispatch) => {
+  const config = {
+    headers: {
+      'Content-type': 'application/json',
+    },
+  };
+  const body = JSON.stringify(social);
+
+  try {
+    const res = await axios.post(
+      `/api/users/update_clicks/${id}`,
+      body,
+      config
+    );
+    dispatch({
+      type: USER_LOADED,
       payload: res.data,
     });
   } catch (err) {

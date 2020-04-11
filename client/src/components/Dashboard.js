@@ -3,9 +3,14 @@ import qr from '../assets/imgs/qr-code.svg';
 import user from '../assets/imgs/users/33137_5d4db4dc17d01709aac1ce0a4567a278.jpg';
 import { Link, Redirect, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { logout } from '../actions/registerUser';
+import { logout, updateClicks } from '../actions/registerUser';
 var QRCode = require('qrcode.react');
-const Dashboard = ({ authh: { isAuth, loading }, logout, user }) => {
+const Dashboard = ({
+  authh: { isAuth, loading },
+  logout,
+  user,
+  updateClicks,
+}) => {
   const [show, setshow] = useState('');
   const { id } = useParams();
 
@@ -14,6 +19,17 @@ const Dashboard = ({ authh: { isAuth, loading }, logout, user }) => {
   else if ((!isAuth || (id !== undefined && user._id !== id)) && !loading) {
     return <Redirect to={`/profile/${id}`} />;
   }
+
+  const handleClicks = (name) => {
+    let social = {
+      ...user.social,
+      [name]: {
+        ...user.social[name],
+        clicks: user.social[name].clicks + 1,
+      },
+    };
+    updateClicks({ social }, user._id);
+  };
 
   const getLink = (username) => {
     if (
@@ -25,17 +41,18 @@ const Dashboard = ({ authh: { isAuth, loading }, logout, user }) => {
     ) {
       if (user.social[username]) {
         if (username === 'spotify')
-          return `http://open.${username}.com/add/${user.social[username]}`;
+          return `http://open.${username}.com/add/${user.social[username].value}`;
         else if (username === 'snapchat')
-          return `http://${username}.com/add/${user.social[username]}}`;
+          return `http://${username}.com/add/${user.social[username].value}}`;
         else if (username === 'whatsapp')
-          return `https://api.whatsapp.com/send?phone=${user.social[username]}`;
-        else return `http://${username}.com/${user.social[username]}`;
+          return `https://api.whatsapp.com/send?phone=${user.social[username].value}`;
+        else return `http://${username}.com/${user.social[username].value}`;
       }
     }
   };
 
-  if (loading || !user.social) return <h5>loading...</h5>;
+  if (loading || !user.social)
+    return <h5 style={{ textAlign: 'center' }}>loading...</h5>;
   else
     return (
       <div>
@@ -82,53 +99,57 @@ const Dashboard = ({ authh: { isAuth, loading }, logout, user }) => {
                 <h1 id="name">{user.name} </h1>
 
                 <p id="bio">{user.bio}</p>
-                {/* <div className="col-12" id="btnDownloadVcard">
-                <a
-                  href="download/vcard/muhammad-arslan-akmal.vcf"
-                  target="_blank"
-                  className="btn"
-                >
-                  Add to Contacts <i className="fa fa-download"></i>
-                </a>
-              </div> */}
-                {/* <div className="col-12 social2">
-                  <ul className="row"></ul>
-                </div> */}
-
-                {/* <div className="tags-link">
-              <ul>
-              <li><a href="#">Start Up Life</a></li>
-           <li><a href="#">Fitness</a></li>
-           <li><a href="#">Connected</a></li>
-           </ul>
-          </div> */}
 
                 <b className="text-center mt-2 mb-2 d-block">
                   <div className="col-12 social2">
                     <ul className="row">
                       {Object.keys(user.social).map(
                         (username) =>
-                          user.social[username] !== '' && (
-                            <li className="col-12">
-                              <a
-                                type="instagram"
-                                href={getLink(username)}
-                                target="_blank"
-                              >
-                                <img
-                                  src={
-                                    username === 'address'
-                                      ? 'https://www.profiles.blue/assets/imgs/map.png'
-                                      : `https://www.profiles.blue/assets/imgs/social-network-${username}.png`
-                                  }
-                                />
-                                <div>
-                                  <p>
-                                    <b>{username}</b>
-                                  </p>
-                                </div>
-                              </a>
-                            </li>
+                          user.social[username].value !== '' && (
+                            <React.Fragment>
+                              <li className="col-12">
+                                <a
+                                  type="instagram"
+                                  href={getLink(username)}
+                                  target="_blank"
+                                  style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    width: '65%',
+                                    margin: 'auto',
+                                  }}
+                                  onClick={() => handleClicks(username)}
+                                >
+                                  <img
+                                    src={
+                                      username === 'address'
+                                        ? 'https://www.profiles.blue/assets/imgs/map.png'
+                                        : `https://www.profiles.blue/assets/imgs/social-network-${username}.png`
+                                    }
+                                  />
+                                  <div>
+                                    <p style={{ marginBottom: '0' }}>
+                                      <b>
+                                        {username.charAt(0).toUpperCase() +
+                                          username.slice(1)}
+                                      </b>
+                                      <br />
+                                      <b>Clicks: </b>
+                                      {user.social[username].clicks}
+                                    </p>
+                                  </div>
+                                </a>
+                              </li>
+                              <span
+                                style={{
+                                  borderTop: '1px solid #bdbdbd',
+                                  // height: '1px',
+                                  width: '80%',
+                                  margin: 'auto',
+                                }}
+                              ></span>
+                            </React.Fragment>
                           )
                       )}
                     </ul>
@@ -261,4 +282,4 @@ const mapStateToProps = (state) => ({
   user: state.registerUser.user,
 });
 
-export default connect(mapStateToProps, { logout })(Dashboard);
+export default connect(mapStateToProps, { logout, updateClicks })(Dashboard);
