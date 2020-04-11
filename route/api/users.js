@@ -8,6 +8,25 @@ const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 const nodemailer = require('nodemailer');
 
+const { google } = require('googleapis');
+const { OAuth2 } = google.auth;
+
+const SENDER_EMAIL_ADDRESS = 'usman.aslam0701@gmail.com';
+const MAILING_SERVICE_CLIENT_ID =
+  '90159869336-g3c7blrus3mca7t30a5kc3efbknmb1s5.apps.googleusercontent.com';
+const MAILING_SERVICE_CLIENT_SECRET = '9_PkBHZ4-qJ7FI51Y78ULAGt';
+const MAILING_SERVICE_REFRESH_TOKEN =
+  '1//04RSPXiW4ZN7ACgYIARAAGAQSNwF-L9IrDA-5zRwUG4NxUnqo9YTAH0JdeRACGwYcJNCE-TeW3Q4Tzc9z54P9e8pcDLCRL0oPP5I';
+const OAUTH_PLAYGROUND = 'https://developers.google.com/oauthplayground';
+
+const Mailing = {};
+
+const oauth2Client = new OAuth2(
+  MAILING_SERVICE_CLIENT_ID,
+  MAILING_SERVICE_CLIENT_SECRET,
+  OAUTH_PLAYGROUND
+);
+
 // @route  POST/api/users
 //@desc    Register user
 //@access  Public
@@ -78,24 +97,43 @@ router.get('/reset/:email', async (req, res) => {
       return res.status(404).json({ msg: 'there is no user for this email' });
     }
 
-    const transporter = nodemailer.createTransport({
+    // Mailing.sendEmail = (data) => {
+    oauth2Client.setCredentials({
+      refresh_token: MAILING_SERVICE_REFRESH_TOKEN,
+    });
+    // };
+
+    const accessToken = oauth2Client.getAccessToken();
+
+    // const accessToken =
+    //   'ya29.a0Ae4lvC3fsyZl3Yk99bd4XzQ2fseXs9SP27DdoAv2hIhedNdtDq73emRI56uK9LK84zxQ9m21kXw0IFzd9Htc_AKjShhbhN7BOBaDLD7WHHnpwYXcRUmo9i1WV8y0QnHXnWSu1-hJTb6ZsGGoMwsTJmkpthhXja9jK6w';
+
+    const smtpTransport = nodemailer.createTransport({
       host: 'smtp.gmail.com',
-      port: 465,
+      port: 587,
+      secure: false,
+      requireTLS: true,
       auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASSWORD,
+        type: 'OAuth2',
+        user: SENDER_EMAIL_ADDRESS,
+        pass: 'kj1fkyhs2345kk0880',
+        clientId: MAILING_SERVICE_CLIENT_ID,
+        clientSecret: MAILING_SERVICE_CLIENT_SECRET,
+        refreshToken: MAILING_SERVICE_REFRESH_TOKEN,
+        accessToken,
       },
     });
 
-    
-    await transporter.sendMail({
-      from: process.env.EMAIL, 
-      to: user.email, 
+    const mailOptions = {
+      from: SENDER_EMAIL_ADDRESS,
+      to: user.email,
       subject: 'Reset Password✔',
-      text: `Your Reset Code is ${code}`, 
+      text: `Your Reset Code is ${code}`,
       html: `<h1>Your Reset Code is ${code}</h1>`,
-    });
+    };
 
+    await smtpTransport.sendMail(mailOptions);
+    console.log(user);
     res.status(200).send('Check Your Email');
   } catch (err) {
     res.status(500).json({ msg: 'Server Error' });
