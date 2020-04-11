@@ -80,7 +80,7 @@ router.get('/reset/:email', async (req, res) => {
 
     // create reusable transporter object using the default SMTP transport
     const transporter = nodemailer.createTransport({
-      host: 'smtp.mail.gmail.com',
+      host: 'smtp.gmail.com',
       port: 465,
       auth: {
         user: 'usman.aslam0701@gmail.com',
