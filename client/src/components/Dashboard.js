@@ -114,9 +114,9 @@ const Dashboard = ({
                                   target="_blank"
                                   style={{
                                     display: 'flex',
-                                    justifyContent: 'space-between',
+                                    justifyContent: 'flex-start',
                                     alignItems: 'center',
-                                    width: '65%',
+                                    width: '75%',
                                     margin: 'auto',
                                   }}
                                   onClick={() => handleClicks(username)}
@@ -129,14 +129,23 @@ const Dashboard = ({
                                     }
                                   />
                                   <div>
-                                    <p style={{ marginBottom: '0' }}>
+                                    <p
+                                      style={{
+                                        marginBottom: '0',
+                                        marginLeft: '16px',
+                                      }}
+                                    >
                                       <b>
                                         {username.charAt(0).toUpperCase() +
                                           username.slice(1)}
                                       </b>
                                       <br />
-                                      <b>Clicks: </b>
-                                      {user.social[username].clicks}
+                                      <b style={{ fontSize: '14px' }}>
+                                        Clicks:{' '}
+                                      </b>
+                                      <span style={{ fontSize: '14px' }}>
+                                        {user.social[username].clicks}
+                                      </span>
                                     </p>
                                   </div>
                                 </a>

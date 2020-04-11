@@ -18,31 +18,31 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
         .then((user) => setuser(user.data)))();
   }, []);
 
-  const handleClicks = async (name) => {
-    const config = {
-      headers: {
-        'Content-type': 'application/json',
-      },
-    };
+  // const handleClicks = async (name) => {
+  //   const config = {
+  //     headers: {
+  //       'Content-type': 'application/json',
+  //     },
+  //   };
 
-    let social = {
-      ...user.social,
-      [name]: {
-        ...user.social[name],
-        clicks: user.social[name].clicks + 1,
-      },
-    };
-    const body = JSON.stringify({ social });
+  //   let social = {
+  //     ...user.social,
+  //     [name]: {
+  //       ...user.social[name],
+  //       clicks: user.social[name].clicks + 1,
+  //     },
+  //   };
+  //   const body = JSON.stringify({ social });
 
-    try {
-      const User = await axios.post(
-        `/api/users/update_clicks/${user._id}`,
-        body,
-        config
-      );
-      setuser({ ...User.data });
-    } catch (err) {}
-  };
+  //   try {
+  //     const User = await axios.post(
+  //       `/api/users/update_clicks/${user._id}`,
+  //       body,
+  //       config
+  //     );
+  //     setuser({ ...User.data });
+  //   } catch (err) {}
+  // };
 
   const getLink = (username) => {
     if (
@@ -140,12 +140,12 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
                                   type="instagram"
                                   href={getLink(username)}
                                   target="_blank"
-                                  onClick={() => handleClicks(username)}
+                                  // onClick={() => handleClicks(username)}
                                   style={{
                                     display: 'flex',
-                                    justifyContent: 'space-between',
+                                    justifyContent: 'flex-start',
                                     alignItems: 'center',
-                                    width: '65%',
+                                    width: '75%',
                                     margin: 'auto',
                                   }}
                                 >
@@ -157,14 +157,19 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
                                     }
                                   />
                                   <div>
-                                    <p style={{ marginBottom: '0' }}>
+                                    <p
+                                      style={{
+                                        marginBottom: '0',
+                                        marginLeft: '10px',
+                                      }}
+                                    >
                                       <b>
                                         {username.charAt(0).toUpperCase() +
                                           username.slice(1)}
                                       </b>
                                       <br />
-                                      <b>Clicks: </b>
-                                      {user.social[username].clicks}
+                                      {/* <b>Clicks: </b>
+                                      {user.social[username].clicks} */}
                                     </p>
                                   </div>
                                 </a>
