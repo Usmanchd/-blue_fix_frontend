@@ -88,6 +88,7 @@ router.get('/reset/:email', async (req, res) => {
       },
     });
 
+    
     // send mail with defined transport object
     await transporter.sendMail({
       from: 'usman.aslam0701@gmail.com', // sender address
