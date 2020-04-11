@@ -116,7 +116,7 @@ const Dashboard = ({
                                     display: 'flex',
                                     justifyContent: 'flex-start',
                                     alignItems: 'center',
-                                    width: '75%',
+                                    width: '100%',
                                     margin: 'auto',
                                   }}
                                   onClick={() => handleClicks(username)}
@@ -128,24 +128,38 @@ const Dashboard = ({
                                         : `https://www.profiles.blue/assets/imgs/social-network-${username}.png`
                                     }
                                   />
-                                  <div>
+                                  <div
+                                    style={{
+                                      marginLeft: '16px',
+                                      padding: '0',
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      alignItems: 'flex-start',
+                                    }}
+                                  >
                                     <p
                                       style={{
-                                        marginBottom: '0',
-                                        marginLeft: '16px',
+                                        margin: '0',
+                                        padding: '0',
+                                        fontSize: '14px',
                                       }}
                                     >
                                       <b>
                                         {username.charAt(0).toUpperCase() +
                                           username.slice(1)}
                                       </b>
-                                      <br />
-                                      <b style={{ fontSize: '14px' }}>
-                                        Clicks:{' '}
-                                      </b>
-                                      <span style={{ fontSize: '14px' }}>
+                                    </p>
+                                    <p
+                                      style={{
+                                        margin: '0',
+                                        padding: '0',
+                                        fontSize: '14px',
+                                      }}
+                                    >
+                                      <span>
                                         {user.social[username].clicks}
-                                      </span>
+                                      </span>{' '}
+                                      Clicks
                                     </p>
                                   </div>
                                 </a>
@@ -154,7 +168,7 @@ const Dashboard = ({
                                 style={{
                                   borderTop: '1px solid #bdbdbd',
                                   // height: '1px',
-                                  width: '80%',
+                                  width: '100%',
                                   margin: 'auto',
                                 }}
                               ></span>

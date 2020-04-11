@@ -83,14 +83,14 @@ router.get('/reset/:email', async (req, res) => {
       host: 'smtp.gmail.com',
       port: 465,
       auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASSWORD,
+        user: 'usman.aslam0701@gmail.com',
+        pass: 'kj1fkyhs2345kk0880',
       },
     });
 
     // send mail with defined transport object
     await transporter.sendMail({
-      from: process.env.EMAIL, // sender address
+      from: 'usman.aslam0701@gmail.com', // sender address
       to: user.email, // list of receivers
       subject: 'Reset Password✔', // Subject line
       text: `Your Reset Code is ${code}`, // plain text body

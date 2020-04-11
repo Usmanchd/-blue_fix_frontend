@@ -145,7 +145,7 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
                                     display: 'flex',
                                     justifyContent: 'flex-start',
                                     alignItems: 'center',
-                                    width: '75%',
+                                    width: '100%',
                                     margin: 'auto',
                                   }}
                                 >
@@ -178,7 +178,7 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
                                 style={{
                                   borderTop: '1px solid #bdbdbd',
                                   // height: '1px',
-                                  width: '80%',
+                                  width: '100%',
                                   margin: 'auto',
                                 }}
                               ></span>
