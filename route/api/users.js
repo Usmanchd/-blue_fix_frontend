@@ -78,23 +78,22 @@ router.get('/reset/:email', async (req, res) => {
       return res.status(404).json({ msg: 'there is no user for this email' });
     }
 
-    // create reusable transporter object using the default SMTP transport
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 465,
       auth: {
-        user: 'usman.aslam0701@gmail.com',
-        pass: 'kj1fkyhs2345kk0880',
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD,
       },
     });
 
-    // send mail with defined transport object
+    
     await transporter.sendMail({
-      from: 'usman.aslam0701@gmail.com', // sender address
-      to: user.email, // list of receivers
-      subject: 'Reset Password✔', // Subject line
-      text: `Your Reset Code is ${code}`, // plain text body
-      html: `<h1>Your Reset Code is ${code}</h1>`, // html body
+      from: process.env.EMAIL, 
+      to: user.email, 
+      subject: 'Reset Password✔',
+      text: `Your Reset Code is ${code}`, 
+      html: `<h1>Your Reset Code is ${code}</h1>`,
     });
 
     res.status(200).send('Check Your Email');
