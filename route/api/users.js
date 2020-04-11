@@ -88,7 +88,6 @@ router.get('/reset/:email', async (req, res) => {
       },
     });
 
-    
     // send mail with defined transport object
     await transporter.sendMail({
       from: 'usman.aslam0701@gmail.com', // sender address
@@ -168,13 +167,14 @@ router.get('/vcf/:id', async (req, res) => {
     const user = await User.findById(id);
     var vCardsJS = require('vcards-js');
     var vCard = vCardsJS();
-
+    console.log(user);
     if (user._id) vCard.uid = user._id;
     if (user.name) vCard.firstName = user.name;
     if (user.avatarUrl) vCard.photo.attachFromUrl(user.avatarUrl, 'JPEG');
     if (user.email) vCard.email = user.email;
-    if (user.social.address.value) vCard.homeAddress.city = user.social.address;
-    if (user.social.phone.value) vCard.cellPhone = user.social.phone;
+    if (user.social.address.value)
+      vCard.homeAddress.city = user.social.address.value;
+    if (user.social.phone.value) vCard.cellPhone = user.social.phone.value;
     vCard.url = `https://profileblue.herokuapp.com/profile/${user._id}`;
     vCard.workUrl = `https://www.instagram.com/${user.social['instagram']}`;
 
