@@ -83,14 +83,14 @@ router.get('/reset/:email', async (req, res) => {
       host: 'smtp.gmail.com',
       port: 465,
       auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASSWORD,
+        user: 'usman.aslam0701@gmail.com',
+        pass: 'kj1fkyhs2345kk0880',
       },
     });
 
     // send mail with defined transport object
     await transporter.sendMail({
-      from: process.env.EMAIL, // sender address
+      from: 'usman.aslam0701@gmail.com', // sender address
       to: user.email, // list of receivers
       subject: 'Reset Password✔', // Subject line
       text: `Your Reset Code is ${code}`, // plain text body
@@ -172,8 +172,8 @@ router.get('/vcf/:id', async (req, res) => {
     if (user.name) vCard.firstName = user.name;
     if (user.avatarUrl) vCard.photo.attachFromUrl(user.avatarUrl, 'JPEG');
     if (user.email) vCard.email = user.email;
-    if (user.social.address) vCard.homeAddress.city = user.social.address;
-    if (user.social.phone) vCard.cellPhone = user.social.phone;
+    if (user.social.address.value) vCard.homeAddress.city = user.social.address;
+    if (user.social.phone.value) vCard.cellPhone = user.social.phone;
     vCard.url = `https://profileblue.herokuapp.com/profile/${user._id}`;
     vCard.workUrl = `https://www.instagram.com/${user.social['instagram']}`;
 
@@ -186,10 +186,10 @@ router.get('/vcf/:id', async (req, res) => {
         social !== 'phone' &&
         social !== 'whatsapp'
       ) {
-        if (user.social[social] !== '')
+        if (user.social[social].value !== '')
           vCard.socialUrls[
             social
-          ] = `https://www.${social}.com/${user.social[social]}`;
+          ] = `https://www.${social}.com/${user.social[social].value}`;
       }
     });
 
