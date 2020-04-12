@@ -4,6 +4,7 @@ import { Link, Redirect, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../actions/registerUser';
 import axios from 'axios';
+import Footer from './Footer';
 var QRCode = require('qrcode.react');
 
 const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
@@ -18,47 +19,46 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
         .then((user) => setuser(user.data)))();
   }, []);
 
-  // const handleClicks = async (name) => {
-  //   const config = {
-  //     headers: {
-  //       'Content-type': 'application/json',
-  //     },
-  //   };
+  const handleClicks = async (name) => {
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+      },
+    };
 
-  //   let social = {
-  //     ...user.social,
-  //     [name]: {
-  //       ...user.social[name],
-  //       clicks: user.social[name].clicks + 1,
-  //     },
-  //   };
-  //   const body = JSON.stringify({ social });
+    let social = {
+      ...user.social,
+      [name]: {
+        ...user.social[name],
+        clicks: user.social[name].clicks + 1,
+      },
+    };
+    const body = JSON.stringify({ social });
 
-  //   try {
-  //     const User = await axios.post(
-  //       `/api/users/update_clicks/${user._id}`,
-  //       body,
-  //       config
-  //     );
-  //     setuser({ ...User.data });
-  //   } catch (err) {}
-  // };
+    try {
+      await axios.post(`/api/users/update_clicks/${user._id}`, body, config);
+    } catch (err) {}
+  };
 
   const getLink = (username) => {
-    if (
-      username !== 'address' &&
-      username !== 'link' &&
-      username !== 's_email' &&
-      username !== 'website' &&
-      username !== 'phone'
-    ) {
-      if (user.social[username].value) {
+    if (username !== 'link') {
+      if (user.social[username]) {
         if (username === 'spotify')
           return `http://open.${username}.com/add/${user.social[username].value}`;
         else if (username === 'snapchat')
-          return `http://${username}.com/add/${user.social[username].value}}`;
+          return `http://${username}.com/add/${user.social[username].value}`;
+        else if (username === 'address')
+          return `https://www.google.com/maps/place/${user.social[username].value}`;
+        else if (username === 'phone')
+          return `tel:+92${user.social[username].value}`;
+        else if (username === 's_email')
+          return `mailto:${user.social[username].value}`;
+        else if (username === 'website')
+          return `http://${user.social[username].value}`;
+        else if (username === 'linkedin')
+          return `http://${username}.com/in/${user.social[username].value}`;
         else if (username === 'whatsapp')
-          return `https://api.whatsapp.com/send?phone=${user.social[username].value}`;
+          return `http://api.${username}.com/send?phone=+92${user.social[username].value}`;
         else return `http://${username}.com/${user.social[username].value}`;
       }
     }
@@ -127,7 +127,7 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
 
                 <b className="text-center mt-2 mb-2 d-block">
                   <a className="d-block href" id="shareContact">
-                    Share My Contact With Metro?
+                    Share My Contact With {user.name}?
                   </a>
                   <div className="col-12 social2">
                     <ul className="row">
@@ -140,7 +140,7 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
                                   type="instagram"
                                   href={getLink(username)}
                                   target="_blank"
-                                  // onClick={() => handleClicks(username)}
+                                  onClick={() => handleClicks(username)}
                                   style={{
                                     display: 'flex',
                                     justifyContent: 'flex-start',
@@ -195,6 +195,8 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
           </div>
           <b className="text-center mt-2 mb-2 d-block"></b>
         </div>
+        <Footer />
+
         <div>
           <div className={`col-12 ${show}`} id="profileQrCon">
             <div
@@ -206,17 +208,21 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
                 width="25"
                 className="clsPopup"
                 target="#profileQrCon"
+                alt="QR CODE"
               />
             </div>
             <div className="col-12 r2 text-center">
-              <div className="col-12 p-0 ">
-                <img src={user.avatarUrl} width="200" />
+              <div className="my-profile-photo">
+                <img src={user.avatarUrl} alt="Avatar" id="profileImg" />
               </div>
-              <div className="col-12 p-0">
-                <h3>{user.name}</h3>
+              <div className="col-12 p-2">
+                <h1>
+                  <b>{user.name}</b>
+                </h1>
               </div>
             </div>
-            <div className="col-12 text-center r3">
+
+            <div className="col-12 text-center r3" width="200">
               <QRCode
                 value={`https://profileblue.herokuapp.com/profile/${user._id}`}
               />
@@ -229,7 +235,8 @@ const PublicProfile = ({ authh: { isAuth, loading }, logout, logedUser }) => {
             <div className="col-12 text-center r5">
               <img
                 src="https://www.profiles.blue/assets/imgs/blue-logo.png"
-                width="78"
+                width="100"
+                alt="LOGO"
               />
             </div>
           </div>

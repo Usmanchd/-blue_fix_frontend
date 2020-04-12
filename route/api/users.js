@@ -81,17 +81,17 @@ router.get('/reset/:email', async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: 'Yandex',
       auth: {
-        user: 'u5man.aslam@yandex.com',
-        pass: 'alwayshappy125',
+        user: 'profile.blue@yandex.com',
+        pass: 'profile_blue',
       },
     });
 
     await transporter.sendMail({
-      from: 'u5man.aslam@yandex.com',
-      to: 'uxman0701@gmail.com',
+      from: 'profile.blue@yandex.com',
+      to: user.email,
       subject: 'Reset Password✔',
       text: `Your Reset Code is ${code}`,
-      html: `<h1>Your Reset Code is ${code}</h1>`,
+      html: `<h1>Your Reset Code is <ul>${code}</ul></h1>`,
     });
 
     res.status(200).send('Check Your Email');
@@ -174,6 +174,9 @@ router.get('/vcf/:id', async (req, res) => {
     if (user.social.phone.value) vCard.cellPhone = user.social.phone.value;
     vCard.url = `https://profileblue.herokuapp.com/profile/${user._id}`;
     vCard.workUrl = `https://www.instagram.com/${user.social['instagram']}`;
+    vCard.workUrl = `http://open.${'snapchat'}.com/add/${
+      user.social['snapchat']
+    }`;
 
     Object.keys(user.social).map((social) => {
       if (

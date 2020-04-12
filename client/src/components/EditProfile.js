@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import AddSocialsView from './Views/AddSocialsView';
-import { updateUser } from '../actions/registerUser';
-import firebase from '../config/fbConfig';
-import FileUploader from 'react-firebase-file-uploader';
+import React, { useEffect, useState } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import AddSocialsView from "./Views/AddSocialsView";
+import { updateUser } from "../actions/registerUser";
+import firebase from "../config/fbConfig";
+import FileUploader from "react-firebase-file-uploader";
+import Spinner from "./Spinner";
 
 const EditProfile = ({ loading, user, updateUser, isAuth }) => {
   useEffect(() => {
@@ -16,10 +17,10 @@ const EditProfile = ({ loading, user, updateUser, isAuth }) => {
   const [Loading, setloading] = useState(true);
 
   const [state, setstate] = useState({
-    avatar: '',
+    avatar: "",
     isUploading: false,
     progress: 0,
-    avatarURL: '',
+    avatarURL: "",
     imageloading: false,
   });
   const handleUploadStart = () =>
@@ -32,7 +33,7 @@ const EditProfile = ({ loading, user, updateUser, isAuth }) => {
     setstate({ ...state, avatar: filename, progress: 100 });
     firebase
       .storage()
-      .ref('images')
+      .ref("images")
       .child(filename)
       .getDownloadURL()
       .then((url) =>
@@ -59,8 +60,8 @@ const EditProfile = ({ loading, user, updateUser, isAuth }) => {
   };
 
   if (Loading || state.imageloading === undefined || state.imageloading)
-    return <p style={{ textAlign: 'center' }}>loading...</p>;
-  else if (!user && loading) return <p style={{ textAlign: 'center' }}>loading...</p>;
+    return <Spinner />;
+  else if (!user && loading) return <Spinner />;
   else if (!isAuth) {
     return <Redirect to="/register" />;
   } else
@@ -70,22 +71,22 @@ const EditProfile = ({ loading, user, updateUser, isAuth }) => {
           <div className="row">
             <div className="col-12">
               <form id="imgForm">
-                <div class="edit-pro-ttl">
+                <div className="edit-pro-ttl">
                   <span>EDIT PROFILE</span>
                   <Link to={`/dashboard/${User._id}`}>
                     <i class="fas fa-times-circle"></i>
                   </Link>
                 </div>
-                <div class="upload-btn-wrapper">
+                <div className="upload-btn-wrapper">
                   <img
                     src={
-                      state.avatarURL !== '' ? state.avatarURL : User.avatarUrl
+                      state.avatarURL !== "" ? state.avatarURL : User.avatarUrl
                     }
                     id="tmpImg"
                     alt=""
                   />
-                  <button class="btnn" type="button">
-                    <i class="camera-icon"></i>
+                  <button className="btnn" type="button">
+                    <i className="camera-icon"></i>
                   </button>
                   <small>Change Profile Photo</small>
                   <FileUploader
@@ -93,7 +94,7 @@ const EditProfile = ({ loading, user, updateUser, isAuth }) => {
                     name="avatar"
                     id="img"
                     randomizeFilename
-                    storageRef={firebase.storage().ref('images')}
+                    storageRef={firebase.storage().ref("images")}
                     onUploadStart={handleUploadStart}
                     onUploadError={handleUploadError}
                     onUploadSuccess={handleUploadSuccess}
@@ -103,7 +104,7 @@ const EditProfile = ({ loading, user, updateUser, isAuth }) => {
                 </div>
               </form>
               <form>
-                <div class="form-con">
+                <div className="form-con">
                   <span>Name</span>
                   <input
                     name="name"
@@ -112,7 +113,7 @@ const EditProfile = ({ loading, user, updateUser, isAuth }) => {
                     onChange={onChange}
                   />
                 </div>
-                <div class="form-con">
+                <div className="form-con">
                   <span>Email</span>
                   <input
                     name="email"
@@ -122,7 +123,7 @@ const EditProfile = ({ loading, user, updateUser, isAuth }) => {
                     disabled
                   />
                 </div>
-                <div class="form-con">
+                <div className="form-con">
                   <span>My Bio</span>
                   <textarea name="bio" value={User.bio} onChange={onChange} />
                 </div>
@@ -131,7 +132,7 @@ const EditProfile = ({ loading, user, updateUser, isAuth }) => {
               <h4>Social Networks</h4>
               <AddSocialsView
                 onSubmit={onSubmit}
-                mode={'edit'}
+                mode={"edit"}
                 initialState={user.social}
                 id={user._id}
               />

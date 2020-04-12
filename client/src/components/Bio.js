@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import logo from '../assets/imgs/blue-logo.png';
-import { Link, Redirect } from 'react-router-dom';
-import { updateUser } from '../actions/registerUser';
-import { connect } from 'react-redux';
-
+import React, { useState } from "react";
+import logo from "../assets/imgs/blue-logo.png";
+import { Link, Redirect } from "react-router-dom";
+import { updateUser } from "../actions/registerUser";
+import { connect } from "react-redux";
+import Spinner from "./Spinner";
 const Bio = ({ updateUser, user, isAuth, loading }) => {
   const [state, setstate] = useState({
-    bio: '',
+    bio: "",
   });
   const { bio } = state;
   const onChangeHandler = (e) =>
     setstate({ ...state, [e.target.name]: e.target.value });
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    if (bio === '') {
-      alert('Please Add Bio to your profile');
+    if (bio === "") {
+      alert("Please Add Bio to your profile");
     } else {
       updateUser({ bio });
     }
@@ -29,7 +29,7 @@ const Bio = ({ updateUser, user, isAuth, loading }) => {
     return <Redirect to="/register" />;
   }
 
-  if (loading) return <p style={{ textAlign: 'center' }}>loading...</p>;
+  if (loading) return <Spinner />;
   else
     return (
       <div class="my-name my-bio">
@@ -43,9 +43,9 @@ const Bio = ({ updateUser, user, isAuth, loading }) => {
               </div>
               <div
                 class="headline"
-                style={{ position: 'relative', display: 'inline-block' }}
+                style={{ position: "relative", display: "inline-block" }}
               >
-                <h1 c style={{ opacity: '1' }}>
+                <h1 c style={{ opacity: "1" }}>
                   Tell me about yourself…
                 </h1>
               </div>
@@ -55,7 +55,7 @@ const Bio = ({ updateUser, user, isAuth, loading }) => {
                     <textarea
                       placeholder="My Bio"
                       name="bio"
-                      style={{ width: '100%' }}
+                      style={{ width: "100%" }}
                       value={bio}
                       onChange={(e) => onChangeHandler(e)}
                     />

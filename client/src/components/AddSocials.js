@@ -1,15 +1,14 @@
-import React from 'react';
+import React from "react";
 // import avatar from '../assets/imgs/blue-logo.png';
-import { Link, Redirect } from 'react-router-dom';
-import AddSocialsView from './Views/AddSocialsView';
-import { connect } from 'react-redux';
-import { updateUser } from '../actions/registerUser';
-
+import { Link, Redirect } from "react-router-dom";
+import AddSocialsView from "./Views/AddSocialsView";
+import { connect } from "react-redux";
+import { updateUser } from "../actions/registerUser";
+import Spinner from "./Spinner";
 const AddSocials = ({ isAuth, user, updateUser, loading }) => {
   const onSubmit = (socialsUserNames) => {
     updateUser({ social: socialsUserNames });
   };
-
 
   if (user) {
     if (
@@ -26,7 +25,7 @@ const AddSocials = ({ isAuth, user, updateUser, loading }) => {
     return <Redirect to="/register" />;
   }
 
-  if (loading) return <p style={{ textAlign: 'center' }}>loading...</p>;
+  if (loading) return <Spinner />;
   else
     return (
       <div className="add-topic social-link">
@@ -43,15 +42,15 @@ const AddSocials = ({ isAuth, user, updateUser, loading }) => {
               </div>
               <div
                 className="headline"
-                style={{ position: 'relative', display: 'inline-block' }}
+                style={{ position: "relative", display: "inline-block" }}
               >
-                <h1 style={{ opacity: '1' }}>
+                <h1 style={{ opacity: "1" }}>
                   Let’s get connected. Are you on any of these social networks?
                 </h1>
               </div>
               <AddSocialsView
                 onSubmit={onSubmit}
-                mode={'gettingStarted'}
+                mode={"gettingStarted"}
                 initialState={undefined}
                 id={user._id}
               />
