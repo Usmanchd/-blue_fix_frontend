@@ -81,13 +81,13 @@ router.get('/reset/:email', async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: 'Yandex',
       auth: {
-        user: 'profile.blue@yandex.com',
-        pass: 'profile_blue',
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD,
       },
     });
 
     await transporter.sendMail({
-      from: 'profile.blue@yandex.com',
+      from: process.env.EMAIL,
       to: user.email,
       subject: 'Reset Password✔',
       text: `Your Reset Code is ${code}`,
