@@ -4,7 +4,7 @@ const db = config.get('mongoURI');
 
 const connectdb = async () => {
   try {
-    await mongoose.connect('mongodb://127.0.0.1/blue', {
+    await mongoose.connect(db || 'mongodb://127.0.0.1/blue', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
