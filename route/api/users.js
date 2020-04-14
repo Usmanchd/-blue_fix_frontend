@@ -50,12 +50,21 @@ router.get('/current/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    const user = await User.findById(id);
+    let user = await User.findById(id);
 
-    if (!user) {
+    if (!user)
       return res.status(400).json({ msg: 'there is no user for this user' });
-    }
 
+    //  Enable the code below to make sure that one user only give one view 
+    //  and on refresh views wont increase!
+
+    // const ip = req.connection.remoteAddress;
+    // if (user.ipOfUsersThatRequestedYourProfile.includes(ip))
+    //   return res.json(user);
+    // user.ipOfUsersThatRequestedYourProfile.push(ip);
+
+    user.views++;
+    await user.save();
     res.json(user);
   } catch (err) {
     res.status(500).json('Server Error');

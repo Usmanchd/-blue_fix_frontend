@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import qr from "../assets/imgs/qr-code.svg";
-import user from "../assets/imgs/users/33137_5d4db4dc17d01709aac1ce0a4567a278.jpg";
-import { Link, Redirect, useParams } from "react-router-dom";
-import { connect } from "react-redux";
-import Footer from "./Footer";
-import Spinner from "./Spinner";
-import { logout, updateClicks } from "../actions/registerUser";
-var QRCode = require("qrcode.react");
+import React, { useState } from 'react';
+import qr from '../assets/imgs/qr-code.svg';
+import user from '../assets/imgs/users/33137_5d4db4dc17d01709aac1ce0a4567a278.jpg';
+import { Link, Redirect, useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
+import Footer from './Footer';
+import Spinner from './Spinner';
+import { logout, updateClicks } from '../actions/registerUser';
+var QRCode = require('qrcode.react');
 
 const Dashboard = ({
   authh: { isAuth, loading },
@@ -14,7 +14,7 @@ const Dashboard = ({
   user,
   updateClicks,
 }) => {
-  const [show, setshow] = useState("");
+  const [show, setshow] = useState('');
   const { id } = useParams();
 
   if (id === undefined && !isAuth && !loading)
@@ -35,29 +35,28 @@ const Dashboard = ({
   };
 
   const getLink = (username) => {
-    if (username !== "link") {
+    if (username !== 'link') {
       if (user.social[username]) {
-        if (username === "spotify")
+        if (username === 'spotify')
           return `http://open.${username}.com/add/${user.social[username].value}`;
-        else if (username === "snapchat")
+        else if (username === 'snapchat')
           return `http://${username}.com/add/${user.social[username].value}`;
-        else if (username === "address")
+        else if (username === 'address')
           return `https://www.google.com/maps/place/${user.social[username].value}`;
-        else if (username === "phone")
+        else if (username === 'phone')
           return `tel:+92${user.social[username].value}`;
-        else if (username === "s_email")
+        else if (username === 's_email')
           return `mailto:${user.social[username].value}`;
-        else if (username === "website")
+        else if (username === 'website')
           return `http://${user.social[username].value}`;
-        else if (username === "linkedin")
+        else if (username === 'linkedin')
           return `http://${username}.com/in/${user.social[username].value}`;
-        else if (username === "whatsapp")
+        else if (username === 'whatsapp')
           return `http://api.${username}.com/send?phone=+92${user.social[username].value}`;
         else return `http://${username}.com/${user.social[username].value}`;
       }
     }
   };
-
 
   if (loading || !user.social) return <Spinner />;
   else
@@ -90,7 +89,7 @@ const Dashboard = ({
             <div className="row">
               <div
                 className="col-12 text-right pt-2 pl-2 pr-2"
-                onClick={() => setshow("show")}
+                onClick={() => setshow('show')}
               >
                 <img
                   src={qr}
@@ -98,6 +97,9 @@ const Dashboard = ({
                   className="showPopup"
                   target="#profileQrCon"
                 />
+              </div>
+              <div class="col-12 text-center pViewSec">
+                Profile views {user.views}
               </div>
               <div className="col-12">
                 <div className="my-profile-photo">
@@ -112,7 +114,7 @@ const Dashboard = ({
                     <ul className="row">
                       {Object.keys(user.social).map(
                         (username) =>
-                          user.social[username].value !== "" && (
+                          user.social[username].value !== '' && (
                             <React.Fragment>
                               <li className="col-12">
                                 <a
@@ -120,35 +122,35 @@ const Dashboard = ({
                                   href={getLink(username)}
                                   target="_blank"
                                   style={{
-                                    display: "flex",
-                                    justifyContent: "flex-start",
-                                    alignItems: "center",
-                                    width: "100%",
-                                    margin: "auto",
+                                    display: 'flex',
+                                    justifyContent: 'flex-start',
+                                    alignItems: 'center',
+                                    width: '100%',
+                                    margin: 'auto',
                                   }}
                                   onClick={() => handleClicks(username)}
                                 >
                                   <img
                                     src={
-                                      username === "address"
-                                        ? "https://www.profiles.blue/assets/imgs/map.png"
+                                      username === 'address'
+                                        ? 'https://www.profiles.blue/assets/imgs/map.png'
                                         : `https://www.profiles.blue/assets/imgs/social-network-${username}.png`
                                     }
                                   />
                                   <div
                                     style={{
-                                      marginLeft: "16px",
-                                      padding: "0",
-                                      display: "flex",
-                                      flexDirection: "column",
-                                      alignItems: "flex-start",
+                                      marginLeft: '16px',
+                                      padding: '0',
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      alignItems: 'flex-start',
                                     }}
                                   >
                                     <p
                                       style={{
-                                        margin: "0",
-                                        padding: "0",
-                                        fontSize: "14px",
+                                        margin: '0',
+                                        padding: '0',
+                                        fontSize: '14px',
                                       }}
                                     >
                                       <b>
@@ -158,14 +160,14 @@ const Dashboard = ({
                                     </p>
                                     <p
                                       style={{
-                                        margin: "0",
-                                        padding: "0",
-                                        fontSize: "14px",
+                                        margin: '0',
+                                        padding: '0',
+                                        fontSize: '14px',
                                       }}
                                     >
                                       <span>
                                         {user.social[username].clicks}
-                                      </span>{" "}
+                                      </span>{' '}
                                       Clicks
                                     </p>
                                   </div>
@@ -173,10 +175,10 @@ const Dashboard = ({
                               </li>
                               <span
                                 style={{
-                                  borderTop: "1px solid #bdbdbd",
+                                  borderTop: '1px solid #bdbdbd',
                                   // height: '1px',
-                                  width: "100%",
-                                  margin: "auto",
+                                  width: '100%',
+                                  margin: 'auto',
                                 }}
                               ></span>
                             </React.Fragment>
@@ -195,7 +197,7 @@ const Dashboard = ({
           <div className={`col-12 ${show}`} id="profileQrCon">
             <div
               className="col-12 text-right pt-4 p-0"
-              onClick={() => setshow("")}
+              onClick={() => setshow('')}
             >
               <img
                 src="https://www.profiles.blue/assets/imgs/xclose.png"

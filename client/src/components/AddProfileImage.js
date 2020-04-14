@@ -1,20 +1,24 @@
-import React, { useState } from "react";
-import avatar from "../assets/imgs/blue-logo.png";
-import { Link, Redirect } from "react-router-dom";
-import firebase from "../config/fbConfig";
-import FileUploader from "react-firebase-file-uploader";
-import { updateUser } from "../actions/registerUser";
-import { connect } from "react-redux";
-import Spinner from "./Spinner";
+import React, { useState } from 'react';
+import avatar from '../assets/imgs/blue-logo.png';
+import { Link, Redirect } from 'react-router-dom';
+import firebase from '../config/fbConfig';
+import FileUploader from 'react-firebase-file-uploader';
+import { updateUser } from '../actions/registerUser';
+import { connect } from 'react-redux';
+import Spinner from './Spinner';
 
 const AddProfileImage = ({ updateUser, user, isAuth, loading }) => {
   const [state, setstate] = useState({
-    avatar: "",
+    avatar: '',
     isUploading: false,
     progress: 0,
-    avatarURL: "",
+    avatarURL: '',
   });
-  const handleUploadStart = () => setstate({ isUploading: true, progress: 0 });
+  const [imgLoading, setimgLoading] = useState(false);
+  const handleUploadStart = () => {
+    setimgLoading(true);
+    setstate({ isUploading: true, progress: 0 });
+  };
   const handleProgress = (progress) => setstate({ progress });
   const handleUploadError = (error) => {
     setstate({ isUploading: false });
@@ -23,15 +27,19 @@ const AddProfileImage = ({ updateUser, user, isAuth, loading }) => {
     setstate({ avatar: filename, progress: 100 });
     firebase
       .storage()
-      .ref("images")
+      .ref('images')
       .child(filename)
       .getDownloadURL()
       .then((url) => setstate({ avatarURL: url }));
+
+    setTimeout(() => {
+      setimgLoading(false);
+    }, 7000);
   };
 
   const handleUpdateUser = () => {
-    if (state.avatarURL === "") {
-      alert("Image is Required");
+    if (state.avatarURL === '') {
+      alert('Image is Required');
     }
     updateUser({ avatarUrl: state.avatarURL });
   };
@@ -60,9 +68,9 @@ const AddProfileImage = ({ updateUser, user, isAuth, loading }) => {
               </div>
               <div
                 className="headline"
-                style={{ position: "relative", display: "inline-block" }}
+                style={{ position: 'relative', display: 'inline-block' }}
               >
-                <h1 style={{ opacity: "1" }}>
+                <h1 style={{ opacity: '1' }}>
                   Add a selfie so people you cross paths with know its you.
                 </h1>
               </div>
@@ -70,14 +78,19 @@ const AddProfileImage = ({ updateUser, user, isAuth, loading }) => {
               <div id="show1" className="toppad showtxt1">
                 <form onSubmit={(e) => e.preventDefault()}>
                   <div className="upload-btn-wrapper">
-                    <img
-                      src={
-                        state.avatarURL ||
-                        "https://www.profiles.blue/assets/imgs/photo.png"
-                      }
-                      id="tmpImg"
-                      alt="logo"
-                    />
+                    {imgLoading ? (
+                      <Spinner />
+                    ) : (
+                      <img
+                        src={
+                          state.avatarURL ||
+                          'https://www.profiles.blue/assets/imgs/photo.png'
+                        }
+                        id="tmpImg"
+                        alt="logo"
+                      />
+                    )}
+
                     <button className="btnn">
                       {/* <i className="far fa-camera-retro"></i> */}
                     </button>
@@ -86,7 +99,7 @@ const AddProfileImage = ({ updateUser, user, isAuth, loading }) => {
                       name="avatar"
                       id="img"
                       randomizeFilename
-                      storageRef={firebase.storage().ref("images")}
+                      storageRef={firebase.storage().ref('images')}
                       onUploadStart={handleUploadStart}
                       onUploadError={handleUploadError}
                       onUploadSuccess={handleUploadSuccess}
@@ -96,7 +109,7 @@ const AddProfileImage = ({ updateUser, user, isAuth, loading }) => {
                   </div>
                   <div
                     className="headline"
-                    style={{ position: "relative", display: "inline-block" }}
+                    style={{ position: 'relative', display: 'inline-block' }}
                   >
                     <p>
                       Add a profile photo so people you cross paths with know
