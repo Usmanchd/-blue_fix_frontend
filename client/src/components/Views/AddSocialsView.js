@@ -144,12 +144,12 @@ const AddSocialsView = ({ onSubmit, mode, initialState, id }) => {
                       },
                     });
                   }}
-                  onFocus={(e) =>
-                    setdisplay({ ...display, [e.target.name]: 'block' })
-                  }
-                  onBlur={(e) =>
-                    setdisplay({ ...display, [e.target.name]: 'none' })
-                  }
+                  // onFocus={(e) =>
+                  //   setdisplay({ ...display, [e.target.name]: 'block' })
+                  // }
+                  // onBlur={(e) =>
+                  //   setdisplay({ ...display, [e.target.name]: 'none' })
+                  // }
                   name={social}
                   placeholder={social.toUpperCase()}
                   className="socLink"
