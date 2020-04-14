@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 // import avatar from '../assets/imgs/blue-logo.png';
 import { Link } from 'react-router-dom';
 
+let keys = [];
+
 const AddSocialsView = ({ onSubmit, mode, initialState, id }) => {
   useEffect(() => {
+    keys = Object.keys(state);
     if (mode !== 'gettingStarted') {
       setstate({ ...state, ...initialState });
     }
@@ -115,7 +118,7 @@ const AddSocialsView = ({ onSubmit, mode, initialState, id }) => {
     <div id="show1" className="toppad showtxt1">
       <form onSubmit={(e) => e.preventDefault()}>
         <ul>
-          {Object.keys(state).map((social) => (
+          {keys.map((social) => (
             <React.Fragment>
               <li>
                 <div className="s-img">
