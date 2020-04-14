@@ -129,6 +129,7 @@ const AddSocialsView = ({ onSubmit, mode, initialState, id }) => {
                   />
                 </div>
                 <input
+                  name={social}
                   value={state[social].value}
                   onChange={(e) => {
                     if (
@@ -144,13 +145,12 @@ const AddSocialsView = ({ onSubmit, mode, initialState, id }) => {
                       },
                     });
                   }}
-                  // onFocus={(e) =>
-                  //   setdisplay({ ...display, [e.target.name]: 'block' })
-                  // }
-                  // onBlur={(e) =>
-                  //   setdisplay({ ...display, [e.target.name]: 'none' })
-                  // }
-                  name={social}
+                  onFocus={(e) =>
+                    setdisplay({ ...display, [e.target.name]: 'block' })
+                  }
+                  onBlur={(e) =>
+                    setdisplay({ ...display, [e.target.name]: 'none' })
+                  }
                   placeholder={social.toUpperCase()}
                   className="socLink"
                   type="text"
