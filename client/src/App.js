@@ -29,6 +29,8 @@ function App() {
     store.dispatch(loadUser());
   }, []);
 
+  if (process.env.REACT_APP_AVAILABLE === 'hide')
+    return <h1>Not Available Rightnow !</h1>;
   return (
     <Provider store={store}>
       <Router>
